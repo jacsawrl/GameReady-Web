@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameReady Pro - Optimiza tu Gaming</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-dark">
+  <button id="themeToggle" class="theme-toggle">🌓</button>
+
+  <header>
+    <div class="container">
+      <h1><span class="glow">🎮 GameReady</span></h1>
+      <h1><span class="glow">JACSAW</span></h1>
+      <p>Analiza, compara y optimiza tu setup para jugar como un pro.</p>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <div class="container">
+      <button class="tab-btn active" data-tab="hardware">🛠️ Hardware</button>
+      <button class="tab-btn" data-tab="compare">⚖️ Comparar</button>
+  <!-- Prices tab removed per user request -->
+  <!-- Guides tab removed per user request -->
+      <button class="tab-btn" data-tab="sensitivity">🎯 Sensibilidad</button>
+      <button class="tab-btn" data-tab="optimizer">⚡ Optimizador</button>
+  <!-- Settings tab removed per user request -->
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Sección: Análisis de Hardware -->
+    <section id="hardware" class="tab-content active">
+      <h2>🔍 Analiza tu Setup</h2>
+      <p>Obtén un informe detallado basado en los juegos que más juegas.</p>
+      
+      <form id="hardwareForm">
+        <div class="form-group">
+          <label for="gpu">GPU</label>
+          <div class="autocomplete">
+            <input type="text" id="gpu" placeholder="Ej: RTX 4070, RX 7800 XT" autocomplete="off">
+            <div id="gpuSuggestions" class="suggestions"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cpu">CPU</label>
+          <div class="autocomplete">
+            <input type="text" id="cpu" placeholder="Ej: Ryzen 7 7800X3D, i7-13700K" autocomplete="off">
+            <div id="cpuSuggestions" class="suggestions"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ram">RAM (GB)</label>
+          <input type="number" id="ram" min="4" max="128" placeholder="Ej: 16">
+        </div>
+        <div class="form-group">
+          <label>🎮 Elige hasta 5 juegos que más juegues:</label>
+          <div class="game-selector">
+            <div class="autocomplete">
+              <input type="text" id="gameInput" placeholder="Escribe y pulsa Enter para añadir (ej: Valorant, CS2...)" autocomplete="off">
+              <div id="gameInputSuggestions" class="suggestions"></div>
+            </div>
+            <div id="selectedGames" class="selected-games" aria-live="polite" style="margin-top:12px;"></div>
+            <small class="muted" style="display:block;margin-top:8px;">Puedes añadir hasta 5 juegos y elegir la calidad por cada uno.</small>
+          </div>
+        </div>
+  <button type="submit" class="btn btn-primary">Generar Informe Personalizado</button>
+      </form>
+      <div id="hardwareReport" class="report-box"></div>
+        <div id="compareMyPcResult" class="report-box" style="display:none; margin-top:16px;"></div>
+    </section>
+
+    <!-- Sección: Comparador -->
+    <section id="compare" class="tab-content">
+      <h2>⚖️ Compara Dos Setups</h2>
+      <p>Selecciona los juegos que quieres usar para comparar rendimiento entre ambos setups (hasta 5).</p>
+      <div class="form-group">
+        <label>🎮 Elige juegos para comparar:</label>
+        <div class="game-selector">
+          <div class="autocomplete">
+            <input type="text" id="compareGameInput" placeholder="Escribe y pulsa Enter para añadir juegos" autocomplete="off">
+            <div id="compareGameSuggestions" class="suggestions"></div>
+          </div>
+          <div id="compareSelectedGames" class="selected-games" aria-live="polite" style="margin-top:12px;"></div>
+        </div>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h3>Setup A</h3>
+          <div class="form-group">
+            <label>GPU:</label>
+            <div class="autocomplete">
+              <input type="text" class="compare-gpu" placeholder="Ej: RTX 4070" autocomplete="off">
+              <div id="compareGpuASuggestions" class="suggestions"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>CPU:</label>
+            <div class="autocomplete">
+              <input type="text" class="compare-cpu" placeholder="Ej: Ryzen 7 7800X3D" autocomplete="off">
+              <div id="compareCpuASuggestions" class="suggestions"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>RAM (GB):</label>
+            <input type="number" class="compare-ram" placeholder="Ej: 16" min="4">
+          </div>
+  </div>
+        <div class="vs">VS</div>
+  <div class="compare-card">
+          <h3>Setup B</h3>
+          <div class="form-group">
+            <label>GPU:</label>
+            <div class="autocomplete">
+              <input type="text" class="compare-gpu-b" placeholder="Ej: RTX 3080" autocomplete="off">
+              <div id="compareGpuBSuggestions" class="suggestions"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>CPU:</label>
+            <div class="autocomplete">
+              <input type="text" class="compare-cpu-b" placeholder="Ej: i7-13700K" autocomplete="off">
+              <div id="compareCpuBSuggestions" class="suggestions"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>RAM (GB):</label>
+            <input type="number" class="compare-ram-b" placeholder="Ej: 16" min="4">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+        <button onclick="compareSetups()" class="btn btn-primary">Comparar</button>
+        <button type="button" onclick="document.querySelectorAll('#compareSelectedGames .game-chip').forEach(c=>c.remove())" class="btn btn-secondary">Limpiar juegos</button>
+      </div>
+      <div id="compareResult" class="report-box"></div>
+    </section>
+
+    <!-- Prices section removed per user request -->
+
+    <!-- Guides removed per user request -->
+
+    <!-- Sensibilidad -->
+    <section id="sensitivity" class="tab-content">
+      <h2>🎯 Conversor de Sensibilidad</h2>
+      <div class="form-group">
+        <label>De:</label>
+        <select id="fromGame">
+          <option value="valorant">Valorant</option>
+          <option value="cs2">CS2</option>
+          <option value="apex">Apex Legends</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input type="number" id="sensValue" step="0.01" placeholder="Sensibilidad" value="0.45">
+      </div>
+      <div class="form-group">
+        <label>A:</label>
+        <select id="toGame">
+          <option value="cs2">CS2</option>
+          <option value="valorant">Valorant</option>
+          <option value="apex">Apex Legends</option>
+        </select>
+      </div>
+      <button onclick="convertSensitivity()" class="btn btn-primary">Convertir</button>
+      <div id="sensResult" class="result-box"></div>
+    </section>
+
+    <!-- Optimizador -->
+    <section id="optimizer" class="tab-content">
+      <h2>⚡ Optimizador de Windows para Gaming</h2>
+      <p>Activa ajustes recomendados para maximizar el rendimiento en juegos. Usa las tarjetas para ver pasos, marcarlos en tu checklist y descargarlos.</p>
+
+      <div class="optimizer-grid">
+        <div class="optimizer-card">
+          <h3><!-- SVG gamepad icon -->
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 10a2 2 0 0 0-2 2v2a3 3 0 0 0 3 3h.5a1.5 1.5 0 0 0 1.5-1.5V15" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Modo Juego
+          </h3>
+          <p>Activa el "Modo Juego" de Windows para priorizar recursos al jugar.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Modo Juego">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Abrir Configuración (Win + I)</li>
+              <li>Ir a Juegos → Modo Juego</li>
+              <li>Activar "Modo Juego"</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Plan de energía
+          </h3>
+          <p>Usa el plan "Alto rendimiento" o crea uno personalizado para gaming.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Plan de energía">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Abrir Panel de control</li>
+              <li>Hardware y sonido → Opciones de energía</li>
+              <li>Seleccionar "Alto rendimiento" o crear perfil personalizado</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Efectos visuales
+          </h3>
+          <p>Reduce animaciones y efectos visuales para mejorar FPS en sistemas limitados.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Efectos visuales">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Botón derecho en Inicio → Sistema</li>
+              <li>Información del sistema → Configuración avanzada del sistema</li>
+              <li>Rendimiento → Ajustar para obtener el mejor rendimiento</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Drivers y Windows Update
+          </h3>
+          <p>Mantén los controladores de GPU y Windows actualizados para mejor compatibilidad.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Actualizar drivers">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Visitar Nvidia/AMD/Intel → Buscar versión más reciente</li>
+              <li>Instalar Game Ready o Studio drivers según tu uso</li>
+              <li>Ejecutar Windows Update y reiniciar</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Crear Punto de Restauración (Seguridad)
+          </h3>
+          <p>Antes de cambiar elementos sensibles (memoria virtual, drivers, registro), crea un punto de restauración de Windows.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Crear Punto de Restauración">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Escribe "Crear punto de restauración" en el buscador de Windows y ábrelo.</li>
+              <li>En la pestaña "Protección del sistema", seleccionar la unidad del sistema (normalmente C:).</li>
+              <li>Hacer clic en "Crear", poner un nombre descriptivo (ej. Antes-Optimización) y confirmar.</li>
+            </ol>
+            <div class="warn">Crear un punto de restauración no cambia tu sistema; permite volver atrás si algo falla.</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Ajustes de Modo Juego / Prioridad
+          </h3>
+          <p>Afina la prioridad del juego y ajustes de anticheat para minimizar procesos conflictivos.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Prioridad del proceso">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Iniciar el juego.</li>
+              <li>Abrir Administrador de tareas (Ctrl+Shift+Esc) → Detalles.</li>
+              <li>Seleccionar el proceso del juego → clic derecho → Establecer prioridad → Alta (No usar en procesos del sistema).</li>
+            </ol>
+            <div class="warn">Elevar prioridad puede afectar la estabilidad si otros procesos críticos necesitan CPU. Usa solo en caso de necesidad.</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 3h12v18H6z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Atajo: Cambiar plan de energía rápido
+          </h3>
+          <p>Un acceso rápido para cambiar a "Alto rendimiento" sin navegar menus largos.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Acceso directo energía">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>En el escritorio: clic derecho → Nuevo → Acceso directo.</li>
+              <li>Pegar: control.exe powercfg.cpl y nombrar "Plan energía".</li>
+              <li>Al abrir, elegir "Alto rendimiento".</li>
+            </ol>
+            <div class="warn">Este atajo abre opciones de energía. No cambies configuraciones de hardware aquí si no estás seguro.</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Escala visual y DWM (suavizado)
+          </h3>
+          <p>Ajusta la escala de pantalla y la composición de Windows para reducir CPU/GPU en pantallas de alta DPI.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Ajustar escala">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Configurar escala al 100% si tu pantalla lo permite para menos trabajo de composición.</li>
+              <li>Si usas múltiples monitores, ajusta la resolución nativa para cada uno.</li>
+              <li>Reinicia sesión para aplicar los cambios completos.</li>
+            </ol>
+            <div class="warn">Cambiar la escala puede alterar el tamaño de texto y UI; pruébalo y revierte si algo se ve incorrecto.</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 3v18M18 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Aplicaciones en segundo plano
+          </h3>
+          <p>Limita apps en segundo plano para liberar memoria y CPU para juegos.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Cerrar apps en 2º plano">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Abrir Configuración (Win + I) → Privacidad y seguridad → Aplicaciones en segundo plano.</li>
+              <li>Revisar la lista y desactivar las apps que no necesitas mientras juegas.</li>
+              <li>Si dudas, cierra manualmente desde el Administrador de tareas (Ctrl+Shift+Esc) las apps que consumen CPU/ram alta.</li>
+            </ol>
+            <div class="warn">No cierres procesos del sistema ni servicios desconocidos. Si no estás seguro, deja la app instalada pero marcada para cerrar manualmente.</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Overlay y Game Bar
+          </h3>
+          <p>Desactiva overlays (Xbox Game Bar, Steam, Discord) que afectan fps y tearing.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Desactivar overlays">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Xbox Game Bar: Win + G → Configuración → desactivar "Xbox Game Bar".</li>
+              <li>Steam: Abrir Steam → Parámetros → En el juego → desactivar "Superposición en el juego".</li>
+              <li>Discord: Ajustes de usuario → Superposición del juego → desactivar.</li>
+            </ol>
+            <div class="warn">Algunos overlays permiten capturas o chat; desactívalos solo si no los necesitas durante el juego.</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16M4 12h8M4 18h16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Memoria virtual (Pagefile)
+          </h3>
+          <p>Ajusta la memoria virtual con precaución si tu sistema tiene poca RAM. Preferible usar System Managed.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Ajustar memoria virtual">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Crear un punto de restauración primero (recomendado).</li>
+              <li>Acceder a Configuración avanzada del sistema → Rendimiento → Opciones avanzadas → Memoria virtual → Cambiar.</li>
+              <li>Marcar "Administrar automáticamente el tamaño del archivo de paginación" o introducir valores personalizados con cuidado (ej. Inicial = 1x RAM, Máx = 3x RAM).</li>
+            </ol>
+            <div class="warn">Evita reducir demasiado la memoria virtual. Si no estás seguro, elige "Administrado por el sistema".</div>
+          </div>
+        </div>
+
+        <div class="optimizer-card">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 6h18v12H3z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Disco / SSD: TRIM & Liberar espacio
+          </h3>
+          <p>Mantén tu SSD en buen estado y libera espacio para evitar stutters y tiempos de carga largos.</p>
+          <div class="card-actions">
+            <button class="btn" data-check="Optimizar disco">✅ Marcar</button>
+            <button class="btn" data-steps-toggle aria-expanded="false">🔽 Ver pasos</button>
+          </div>
+          <div class="steps" hidden>
+            <ol>
+              <li>Buscar "Optimizar unidades" en Windows y ejecutar Optimizar en tus SSDs (esto envía TRIM).</li>
+              <li>Usar Liberador de espacio o Storage Sense para eliminar archivos temporales.</li>
+              <li>No uses desfragmentación en SSDs; solo en HDDs tradicionales.</li>
+            </ol>
+            <div class="warn">Siempre comprueba que los datos importantes estén respaldados antes de operaciones de limpieza masiva.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="optimizer-actions" style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+        <button id="downloadChecklist" class="btn btn-primary">Descargar checklist</button>
+        <div id="toast" role="status" aria-live="polite" style="display:none; margin-left:12px;"></div>
+      </div>
+
+      <div class="report-box" id="optimizerResult" style="display:none;"></div>
+    </section>
+
+    <!-- Configuración de juego removed per user request -->
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 GameReady Jacsaw • Datos basados en benchmarks reales (PassMark, TechPowerUp, Digital Foundry).</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
